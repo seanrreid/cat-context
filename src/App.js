@@ -1,24 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useReducer } from "react";
+import { StateProvider } from "./context";
+import DemoComponent from "./components/DemoComponent";
 
 function App() {
+  const initialState = {
+    name: "Sean",
+  };
+
+  const reducer = (state, action) => {
+    const { name } = action;
+    switch (action.type) {
+      case "CHANGE_NAME":
+        return {
+          ...state,
+          name,
+        };
+      default:
+        return state;
+    }
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <StateProvider value={useReducer(reducer, initialState)}>
+        <DemoComponent />
+      </StateProvider>
     </div>
   );
 }
